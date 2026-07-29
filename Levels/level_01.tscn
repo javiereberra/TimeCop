@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ofqx032o8wcs"]
+
+[node name="Level01" type="Node2D"]
+
+[node name="FloorManager" type="Node" parent="."]
+
+[node name="Floor01" type="Node2D" parent="."]
+
+[node name="TimelineA" type="Node2D" parent="Floor01"]
+
+[node name="TimelineB" type="Node2D" parent="Floor01"]
+
+[node name="Floor02" type="Node2D" parent="."]
+
+[node name="TimelineA" type="Node2D" parent="Floor02"]
+
+[node name="TimelineB" type="Node2D" parent="Floor02"]
+
+[node name="Floor03" type="Node2D" parent="."]
+
+[node name="TimelineA" type="Node2D" parent="Floor03"]
+
+[node name="TimelineB" type="Node2D" parent="Floor03"]
