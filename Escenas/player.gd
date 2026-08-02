@@ -12,3 +12,11 @@ func _physics_process(_delta):
 
 	velocity = direction * speed
 	move_and_slide()
+	
+	if Input.is_action_just_pressed("phase_shift"):
+		var phase_manager := get_tree().get_first_node_in_group("phase_manager")
+		
+		if phase_manager != null:
+			phase_manager.change_phase()
+		else:
+			push_warning("No se encontrò el PhaseMananager.")
