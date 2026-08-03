@@ -1,9 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsqqj6e68g4vc"]
+[gd_scene load_steps=5 format=3 uid="uid://bsqqj6e68g4vc"]
 
 [ext_resource type="Texture2D" uid="uid://btvtae8nhfo1p" path="res://Sprites/Player/hitman1_gun.png" id="1_cnkc8"]
 [ext_resource type="Script" uid="uid://bnlantxr581sy" path="res://Escenas/player.gd" id="1_i8vih"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i8vih"]
+radius = 12.0
+height = 42.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qgqwx"]
 radius = 12.0
 height = 42.0
 
@@ -18,3 +22,8 @@ position = Vector2(-9, 0)
 shape = SubResource("CapsuleShape2D_i8vih")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PhaseCheck" type="ShapeCast2D" parent="."]
+position = Vector2(-9, 0)
+shape = SubResource("CapsuleShape2D_qgqwx")
+target_position = Vector2(0, 0)

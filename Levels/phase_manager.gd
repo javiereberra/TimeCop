@@ -9,8 +9,21 @@ var timeline_a_active: bool = true
 # referencia al jugador
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 
+#CAMBIO DE FASE
 func change_phase() -> void:
 	print("Cambio de fase solicitado")
+	
+	#Averiguar a qué máscara vamos cambiar
+	var target_mask: int	
+	if timeline_a_active:
+		target_mask = 2
+	else:
+		target_mask = 1
+		
+	if player.is_phase_blocked(target_mask):
+		print("Cambio de fase bloqueado")
+		return
+		
 	#cambiar timeline activa
 	timeline_a_active = not timeline_a_active
 	

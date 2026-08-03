@@ -1,7 +1,12 @@
 extends CharacterBody2D
+
 # velocidad base
 @export var speed := 300.0
-#movimiento base
+
+# referencia al shapeCast2d
+@onready var phase_check: ShapeCast2D = $PhaseCheck
+
+# movimiento base
 func _physics_process(_delta):
 	var direction := Input.get_vector(
 		"move_left",
@@ -20,3 +25,10 @@ func _physics_process(_delta):
 			phase_manager.change_phase()
 		else:
 			push_warning("No se encontrò el PhaseMananager.")
+			
+#Función para chequear si hay un objeto antes del cambio de fase
+func is_phase_blocked(target_mask: int) -> bool:
+	phase_check.collision_mask = target_mask
+	phase_check.force_shapecast_update()
+	
+	return phase_check.is_colliding()
