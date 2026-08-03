@@ -9,6 +9,15 @@ var timeline_a_active: bool = true
 # referencia al jugador
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 
+func _ready():
+	# Timeline a comienza activa
+	timeline_a_active = true
+	# Configuración visual inicial
+	timeline_a.visible = true
+	timeline_b.visible = false
+	# Configurar colisiones
+	player.collision_mask = 1
+
 #CAMBIO DE FASE
 func change_phase() -> void:
 	print("Cambio de fase solicitado")
