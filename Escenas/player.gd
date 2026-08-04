@@ -2,9 +2,21 @@ extends CharacterBody2D
 
 # velocidad base
 @export var speed := 300.0
+# crosshair
+@export var crosshair_texture: Texture2D
 
 # referencia al shapeCast2d
 @onready var phase_check: ShapeCast2D = $PhaseCheck
+
+func _ready() -> void:
+	Input.set_custom_mouse_cursor(
+		crosshair_texture,
+		Input.CURSOR_ARROW,
+		Vector2(
+			crosshair_texture.get_width() / 2.0,
+			crosshair_texture.get_height() / 2.0
+		)
+	)
 
 # movimiento base
 func _physics_process(_delta):
@@ -17,6 +29,9 @@ func _physics_process(_delta):
 
 	velocity = direction * speed
 	move_and_slide()
+	
+	look_at(get_global_mouse_position())
+	
 	
 	if Input.is_action_just_pressed("phase_shift"):
 		var phase_manager := get_tree().get_first_node_in_group("phase_manager")

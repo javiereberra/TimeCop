@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=4 uid="uid://ofqx032o8wcs"]
 
 [ext_resource type="Script" uid="uid://cn8f4nf0k7gd" path="res://Levels/level_01.gd" id="1_1jt1u"]
-[ext_resource type="Texture2D" uid="uid://ben3fwgeoerqv" path="res://Sprites/Tiles/tilesheet_complete.png" id="1_hb0y7"]
+[ext_resource type="Texture2D" uid="uid://ben3fwgeoerqv" path="res://Assets/Sprites/Tiles/tilesheet_complete.png" id="1_hb0y7"]
 [ext_resource type="Script" uid="uid://g10ukeqhatkn" path="res://Levels/phase_manager.gd" id="2_er0or"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1jt1u"]

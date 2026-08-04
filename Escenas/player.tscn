@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsqqj6e68g4vc"]
+[gd_scene load_steps=6 format=3 uid="uid://bsqqj6e68g4vc"]
 
-[ext_resource type="Texture2D" uid="uid://btvtae8nhfo1p" path="res://Sprites/Player/hitman1_gun.png" id="1_cnkc8"]
+[ext_resource type="Texture2D" uid="uid://btvtae8nhfo1p" path="res://Assets/Sprites/Player/hitman1_gun.png" id="1_cnkc8"]
 [ext_resource type="Script" uid="uid://bnlantxr581sy" path="res://Escenas/player.gd" id="1_i8vih"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i8vih"]
+load_path = "res://.godot/imported/crosshair.png-8803f647edbd9ba881c7d78fbf77ebc7.ctex"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i8vih"]
 radius = 12.0
@@ -13,6 +16,7 @@ height = 42.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_i8vih")
+crosshair_texture = SubResource("CompressedTexture2D_i8vih")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_cnkc8")
