@@ -9,6 +9,7 @@ extends CharacterBody2D
 @onready var phase_check: ShapeCast2D = $PhaseCheck
 
 func _ready() -> void:
+	# Aplicar el cursor personalizado
 	Input.set_custom_mouse_cursor(
 		crosshair_texture,
 		Input.CURSOR_ARROW,
@@ -30,9 +31,10 @@ func _physics_process(_delta):
 	velocity = direction * speed
 	move_and_slide()
 	
+	#mirar la posición del mouse
 	look_at(get_global_mouse_position())
 	
-	
+	# cambio de fase para llamar a su funciòn
 	if Input.is_action_just_pressed("phase_shift"):
 		var phase_manager := get_tree().get_first_node_in_group("phase_manager")
 		
