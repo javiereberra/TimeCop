@@ -59,19 +59,21 @@ func is_phase_blocked(target_mask: int) -> bool:
 	
 	return phase_check.is_colliding()
 	
+	# Función para espiar nivel
 func update_peek_camera(delta):
 	var target_position := Vector2.ZERO
 	
+	# si presionamos shift, primero calculamos si el cursor está fuera de la zona muerta
+	# y calcula la nueva posición de la cámara
 	if Input.is_action_pressed("peek"):
 		var viewport_center := get_viewport_rect().size / 2
 		var mouse_position := get_viewport().get_mouse_position()
 		var mouse_offset := mouse_position - viewport_center
-		
-		
-		
+				
 		if mouse_offset.length() > dead_zone:
 			target_position = mouse_offset.normalized() * peek_distance
 			
+	# dezplaza la cámara suavemente
 	camera_pivot.position = camera_pivot.position.lerp(
 		target_position,
 		1.0 - exp(-12.0 * delta)
