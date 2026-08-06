@@ -17,15 +17,20 @@ height = 42.0
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_i8vih")
 crosshair_texture = SubResource("CompressedTexture2D_i8vih")
+peek_distance = 400.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="AimPivot" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="AimPivot"]
 texture = ExtResource("1_cnkc8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-9, 0)
 shape = SubResource("CapsuleShape2D_i8vih")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraPivot" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="CameraPivot"]
 
 [node name="PhaseCheck" type="ShapeCast2D" parent="."]
 position = Vector2(-9, 0)

@@ -4,9 +4,16 @@ extends CharacterBody2D
 @export var speed := 300.0
 # crosshair
 @export var crosshair_texture: Texture2D
+# variables para la cámara espía
+@export var peek_distance: = 200.0
+@export var dead_zone: = 200.0
 
 # referencia al shapeCast2d
 @onready var phase_check: ShapeCast2D = $PhaseCheck
+# referencia a cámara pivot
+@onready var camera_pivot: Node2D = $CameraPivot
+# referencia al aimpivot
+@onready var aim_pivot: Node2D = $AimPivot
 
 func _ready() -> void:
 	# Aplicar el cursor personalizado
@@ -20,7 +27,7 @@ func _ready() -> void:
 	)
 
 # movimiento base
-func _physics_process(_delta):
+func _physics_process(delta):
 	var direction := Input.get_vector(
 		"move_left",
 		"move_right",
@@ -32,7 +39,9 @@ func _physics_process(_delta):
 	move_and_slide()
 	
 	#mirar la posición del mouse
-	look_at(get_global_mouse_position())
+	aim_pivot.look_at(get_global_mouse_position())
+	#actualiza la cámara al espiar
+	update_peek_camera(delta)
 	
 	# cambio de fase para llamar a su funciòn
 	if Input.is_action_just_pressed("phase_shift"):
@@ -49,3 +58,22 @@ func is_phase_blocked(target_mask: int) -> bool:
 	phase_check.force_shapecast_update()
 	
 	return phase_check.is_colliding()
+	
+func update_peek_camera(delta):
+	var target_position := Vector2.ZERO
+	
+	if Input.is_action_pressed("peek"):
+		var viewport_center := get_viewport_rect().size / 2
+		var mouse_position := get_viewport().get_mouse_position()
+		var mouse_offset := mouse_position - viewport_center
+		
+		
+		
+		if mouse_offset.length() > dead_zone:
+			target_position = mouse_offset.normalized() * peek_distance
+			
+	camera_pivot.position = camera_pivot.position.lerp(
+		target_position,
+		1.0 - exp(-12.0 * delta)
+	)
+	
