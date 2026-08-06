@@ -24,6 +24,9 @@ peek_distance = 400.0
 [node name="Sprite2D" type="Sprite2D" parent="AimPivot"]
 texture = ExtResource("1_cnkc8")
 
+[node name="Muzzle" type="Marker2D" parent="AimPivot"]
+position = Vector2(10, 0)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-9, 0)
 shape = SubResource("CapsuleShape2D_i8vih")

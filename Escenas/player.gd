@@ -14,6 +14,8 @@ extends CharacterBody2D
 @onready var camera_pivot: Node2D = $CameraPivot
 # referencia al aimpivot
 @onready var aim_pivot: Node2D = $AimPivot
+# referencia al muzzle
+@onready var muzzle: Marker2D = $AimPivot/Muzzle
 
 func _ready() -> void:
 	# Aplicar el cursor personalizado
@@ -52,6 +54,8 @@ func _physics_process(delta):
 		else:
 			push_warning("No se encontrò el PhaseMananager.")
 			
+	if Input.is_action_just_pressed("shoot"):
+		shoot()
 #Función para chequear si hay un objeto antes del cambio de fase
 func is_phase_blocked(target_mask: int) -> bool:
 	phase_check.collision_mask = target_mask
@@ -78,4 +82,32 @@ func update_peek_camera(delta):
 		target_position,
 		1.0 - exp(-12.0 * delta)
 	)
+	
+func shoot():
+	#??
+	print("bang")
+	var space_state := get_world_2d().direct_space_state
+	
+	# crear consulta para lanzar disparo
+	var query := PhysicsRayQueryParameters2D.create(
+		muzzle.global_position,
+		get_global_mouse_position()		
+	)
+	
+	# Evitar que el disparo choque con el player
+	query.exclude = [self]
+	
+	# Obtener el primer objeto que intercepta
+	var result := space_state.intersect_ray(query)
+	
+	# Si no golpeò nada, termina
+	if result.is_empty():
+		return
+		
+	# Guardar el impacto
+	var collider = result["collider"]
+	
+	#Si el objeto tiene die(), eliminar
+	if collider.has_method("die"):
+		collider.die()
 	
