@@ -93,6 +93,8 @@ func shoot():
 		muzzle.global_position,
 		get_global_mouse_position()		
 	)
+	# Fijar la consulta sólo en la timeline activa
+	query.collision_mask = collision_mask
 	
 	# Evitar que el disparo choque con el player
 	query.exclude = [self]
