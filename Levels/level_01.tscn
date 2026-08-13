@@ -1686,7 +1686,7 @@ tile_map_data = PackedByteArray("AAAFAA4AAAAGABAAAAAFAA8AAAAGABAAAAAFABAAAAAGABA
 tile_set = SubResource("TileSet_1jt1u")
 
 [node name="Enemy" parent="Floor01/TimelineA" instance=ExtResource("3_1cq4g")]
-position = Vector2(200, 300)
+position = Vector2(1100, -300)
 collision_mask = 5
 
 [node name="TimelineB" type="Node2D" parent="Floor01"]
@@ -1700,7 +1700,7 @@ tile_map_data = PackedByteArray("AAAFAA4AAAAGABAAAAAFAA8AAAAGABAAAAAFABAAAAAGABA
 tile_set = SubResource("TileSet_1cq4g")
 
 [node name="Enemy2" parent="Floor01/TimelineB" instance=ExtResource("3_1cq4g")]
-position = Vector2(1238, 770)
+position = Vector2(100, -300)
 collision_layer = 2
 collision_mask = 6
 
