@@ -16,3 +16,6 @@ texture = ExtResource("2_40vke")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-10, 0)
 shape = SubResource("CapsuleShape2D_4gyqm")
+
+[node name="ObstacleCheck" type="RayCast2D" parent="."]
+target_position = Vector2(40, 0)
