@@ -43,5 +43,9 @@ func change_phase() -> void:
 	#cambiar capas de colisiòn del player
 	if timeline_a_active:
 		player.collision_mask = 1
+		timeline_a.process_mode = Node.PROCESS_MODE_INHERIT
+		timeline_b.process_mode = Node.PROCESS_MODE_DISABLED
 	else:
 		player.collision_mask = 2
+		timeline_a.process_mode = Node.PROCESS_MODE_DISABLED
+		timeline_b.process_mode = Node.PROCESS_MODE_INHERIT
