@@ -19,3 +19,9 @@ shape = SubResource("CapsuleShape2D_4gyqm")
 
 [node name="ObstacleCheck" type="RayCast2D" parent="."]
 target_position = Vector2(40, 0)
+
+[node name="PatrolTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="PatrolTimer" to="." method="_on_patrol_timer_timeout"]
