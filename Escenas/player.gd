@@ -2,12 +2,11 @@ extends CharacterBody2D
 
 # velocidad base
 @export var speed := 300.0
-# crosshair
-@export var crosshair_texture: Texture2D
 # variables para la cámara espía
 @export var peek_distance: = 200.0
 @export var dead_zone: = 200.0
-
+# referencia a la mira
+@onready var crosshair: Sprite2D = $Crosshair
 # referencia al shapeCast2d
 @onready var phase_check: ShapeCast2D = $PhaseCheck
 # referencia a cámara pivot
@@ -17,16 +16,16 @@ extends CharacterBody2D
 # referencia al muzzle
 @onready var muzzle: Marker2D = $AimPivot/Muzzle
 
+# variable para direcciòn de apuntado
+var aim_direction := Vector2.RIGHT
+
 func _ready() -> void:
-	# Aplicar el cursor personalizado
-	Input.set_custom_mouse_cursor(
-		crosshair_texture,
-		Input.CURSOR_ARROW,
-		Vector2(
-			crosshair_texture.get_width() / 2.0,
-			crosshair_texture.get_height() / 2.0
-		)
-	)
+	#ocultar cursor mouse
+	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+func _process(_delta):
+	# la mira toma posición del mouse
+	crosshair.global_position = get_global_mouse_position()
 
 # movimiento base
 func _physics_process(delta):
@@ -40,8 +39,22 @@ func _physics_process(delta):
 	velocity = direction * speed
 	move_and_slide()
 	
-	#mirar la posición del mouse
-	aim_pivot.look_at(get_global_mouse_position())
+	var gamepad_aim := Input.get_vector(
+		"aim_left",
+		"aim_right",
+		"aim_up",
+		"aim_down"
+	)
+	
+	if gamepad_aim.length() > 0.2:
+		aim_direction = gamepad_aim.normalized()
+		aim_pivot.rotation = aim_direction.angle()
+	else:
+		#mirar la posición del mouse
+		aim_pivot.look_at(get_global_mouse_position())
+	
+	
+	
 	#actualiza la cámara al espiar
 	update_peek_camera(delta)
 	
