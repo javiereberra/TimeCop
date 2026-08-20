@@ -15,17 +15,29 @@ extends CharacterBody2D
 @onready var aim_pivot: Node2D = $AimPivot
 # referencia al muzzle
 @onready var muzzle: Marker2D = $AimPivot/Muzzle
+# Distancia fija para el crosshair con gamepad
+@export var gamepad_crosshair_distance := 150.0
+# Rango máximo del disparo
+@export var shoot_range := 2000.0
 
 # variable para direcciòn de apuntado
 var aim_direction := Vector2.RIGHT
+
+# variable para chequear quien controla la mira
+var using_gamepad_aim := false
 
 func _ready() -> void:
 	#ocultar cursor mouse
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
+func _input(event):
+	if event is InputEventMouseMotion:
+		using_gamepad_aim = false
+		
 func _process(_delta):
 	# la mira toma posición del mouse
-	crosshair.global_position = get_global_mouse_position()
+	if not using_gamepad_aim:
+		crosshair.global_position = get_global_mouse_position()
 
 # movimiento base
 func _physics_process(delta):
@@ -47,11 +59,14 @@ func _physics_process(delta):
 	)
 	
 	if gamepad_aim.length() > 0.2:
+		using_gamepad_aim = true
 		aim_direction = gamepad_aim.normalized()
 		aim_pivot.rotation = aim_direction.angle()
+		
+		crosshair.global_position = global_position + aim_direction * gamepad_crosshair_distance
 	else:
 		#mirar la posición del mouse
-		aim_pivot.look_at(get_global_mouse_position())
+		aim_pivot.look_at(crosshair.global_position)
 	
 	
 	
@@ -101,10 +116,15 @@ func shoot():
 	print("bang")
 	var space_state := get_world_2d().direct_space_state
 	
+	var shoot_direction := (
+		crosshair.global_position - muzzle.global_position
+		).normalized()
+	
+	var shoot_end := muzzle.global_position + shoot_direction * shoot_range
 	# crear consulta para lanzar disparo
 	var query := PhysicsRayQueryParameters2D.create(
 		muzzle.global_position,
-		get_global_mouse_position()		
+		shoot_end
 	)
 	# Fijar la consulta sólo en la timeline activa
 	query.collision_mask = collision_mask
