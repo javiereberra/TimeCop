@@ -57,11 +57,12 @@ func alert():
 	pass
 	# chequea si están a distancia de la visión del enemigo
 func can_see_player():
+	# distancia entre enemigo y jugador
 	var distance_to_player := global_position.distance_to(player.global_position)
-	
+	# si no està a distancia no lo ve
 	if distance_to_player > vision_distance:
 		return false
-		
+	# calcular si el angulo de vision ve al jugador
 	var direction_to_player := (player.global_position - global_position).normalized()
 	var forward_direction := transform.x.normalized()
 	
@@ -70,6 +71,27 @@ func can_see_player():
 	)
 	
 	if angle_to_player > vision_angle / 2:
+		return false
+		
+	# raycast para ver si hay una pared en el medio
+	var space_state := get_world_2d().direct_space_state
+	
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position,
+		player.global_position
+	)
+	# la capa del rayo debe ser la misma del enemigo (timeline)
+	query.collision_mask = collision_layer | (1 << 2)
+	query.exclude = [self]
+	# guarda el primer impacto
+	var result := space_state.intersect_ray(query)
+	
+	# si no golpea nada, no ve al player
+	if result.is_empty():
+		return false
+	
+	# si golpea algo que no es el player, da falso
+	if result["collider"] != player:
 		return false
 	
 	return true
