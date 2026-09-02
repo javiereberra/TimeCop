@@ -27,6 +27,9 @@ func _ready():
 
 # PROCESAR LOS ESTADOS
 func _physics_process(_delta):
+	if can_see_player():
+		print("VEO AL PLAYER")
+	
 	if current_state == State.PATROL:
 		patrol()
 	elif current_state == State.ALERT:
@@ -52,11 +55,21 @@ func patrol():
 #   ESTADOALERT  
 func alert():
 	pass
-	
+	# chequea si están a distancia de la visión del enemigo
 func can_see_player():
 	var distance_to_player := global_position.distance_to(player.global_position)
 	
 	if distance_to_player > vision_distance:
+		return false
+		
+	var direction_to_player := (player.global_position - global_position).normalized()
+	var forward_direction := transform.x.normalized()
+	
+	var angle_to_player := rad_to_deg(
+		acos(forward_direction.dot(direction_to_player))
+	)
+	
+	if angle_to_player > vision_angle / 2:
 		return false
 	
 	return true
