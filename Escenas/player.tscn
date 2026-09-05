@@ -1,8 +1,36 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsqqj6e68g4vc"]
+[gd_scene load_steps=10 format=3 uid="uid://bsqqj6e68g4vc"]
 
 [ext_resource type="Texture2D" uid="uid://btvtae8nhfo1p" path="res://Assets/Sprites/Player/hitman1_gun.png" id="1_cnkc8"]
 [ext_resource type="Script" uid="uid://bnlantxr581sy" path="res://Escenas/player.gd" id="1_i8vih"]
+[ext_resource type="Texture2D" uid="uid://dj0d4wyg0juy8" path="res://Assets/Sprites/Player/sinpiernas.png" id="3_7v5l4"]
 [ext_resource type="Texture2D" uid="uid://p80c4rim040o" path="res://Assets/UI/crosshair.png" id="3_qgqwx"]
+[ext_resource type="Texture2D" uid="uid://cl8iwdkdlaxqr" path="res://Assets/Sprites/Player/legs1a.png" id="3_xlwfv"]
+[ext_resource type="Texture2D" uid="uid://fgif523csxqn" path="res://Assets/Sprites/Player/legs2a.png" id="4_7v5l4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ohiiw"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7v5l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_xlwfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7v5l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_7v5l4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 8.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_i8vih"]
 radius = 12.0
@@ -17,9 +45,15 @@ collision_layer = 4
 script = ExtResource("1_i8vih")
 peek_distance = 400.0
 
+[node name="Legs" type="AnimatedSprite2D" parent="."]
+position = Vector2(-3, 0)
+sprite_frames = SubResource("SpriteFrames_ohiiw")
+animation = &"walk"
+
 [node name="AimPivot" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="AimPivot"]
+z_index = 1
 texture = ExtResource("1_cnkc8")
 
 [node name="Muzzle" type="Marker2D" parent="AimPivot"]

@@ -19,6 +19,8 @@ extends CharacterBody2D
 @export var gamepad_crosshair_distance := 150.0
 # Rango máximo del disparo
 @export var shoot_range := 2000.0
+# Referencia a la animación de piernas
+@onready var legs: AnimatedSprite2D = $Legs
 
 # variable para direcciòn de apuntado
 var aim_direction := Vector2.RIGHT
@@ -47,6 +49,14 @@ func _physics_process(delta):
 		"move_up",
 		"move_down"
 	)
+	
+	#Animaciòn de piernas
+	if direction != Vector2.ZERO:
+		legs.play("walk")
+	else:
+		legs.stop()
+		
+	legs.rotation = aim_pivot.rotation
 
 	velocity = direction * speed
 	move_and_slide()
