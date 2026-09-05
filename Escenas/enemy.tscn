@@ -9,6 +9,7 @@ height = 42.0
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_yj12m")
+attack_distance = 150
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_40vke")

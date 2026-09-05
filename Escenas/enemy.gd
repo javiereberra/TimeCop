@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 # VARIABLES EXPORTABLES
-@export var speed := 100.0
+@export var patrol_speed := 100.0
+@export var chase_speed := 200.0
 # REFERENCIAS A NODOS
 @onready var obstacle_check: RayCast2D = $ObstacleCheck
 @onready var patrol_timer: Timer = $PatrolTimer
@@ -9,11 +10,15 @@ extends CharacterBody2D
 # VARIABLES DE DETECCIÓN
 @export var vision_distance := 500.0
 @export var vision_angle := 90.0
+# VARIABLES DE CHASE
+@export var attack_distance := 50
+
+var last_seen_position := Vector2.ZERO
 
 #  ---ESTADOS DE LA IA----
 enum State {
 	PATROL,
-	ALERT
+	CHASE
 }
 
 var current_state = State.PATROL
@@ -32,11 +37,17 @@ func _physics_process(_delta):
 	
 	if current_state == State.PATROL:
 		patrol()
-	elif current_state == State.ALERT:
-		alert()
+	elif current_state == State.CHASE:
+		chase()
 	
 # FUNCIÒN DEL ESTADO PATROL
 func patrol():
+	# si ve al jugador, guarda posicion y pasa a CHASE
+	if can_see_player():
+		last_seen_position = player.global_position
+		current_state = State.CHASE
+		return
+		
 	# Si hay una pared delante y no espera, gira 90 grados.
 	if obstacle_check.is_colliding() and not is_waiting:
 		rotation += deg_to_rad(90)
@@ -48,14 +59,45 @@ func patrol():
 	if is_waiting:
 		velocity = Vector2.ZERO
 	else:
-		velocity = transform.x * speed	
+		velocity = transform.x * patrol_speed	
 		
 	move_and_slide()
+	
 
-#   ESTADOALERT  
-func alert():
-	pass
-	# chequea si están a distancia de la visión del enemigo
+
+#   ESTADO CHASE  
+func chase():
+	
+	#mientras vea al jugador, recordar su posicion
+	if not can_see_player():
+		current_state = State.PATROL
+		velocity = Vector2.ZERO
+		return
+		
+	last_seen_position = player.global_position
+		
+	#calculamos la distancia entre el enemigo y jugador	
+	var distance_to_player := global_position.distance_to(player.global_position)
+	
+	if can_see_player() and distance_to_player <= attack_distance:
+		velocity = Vector2.ZERO
+		print("ATTACK")
+		return
+	
+	#se determina direcciòn del player
+	var direction_to_target := (
+		last_seen_position - global_position
+	).normalized()
+	
+	# el enemigo debe mirar al player
+	rotation = direction_to_target.angle()
+	
+	#lo persigue con la velocidad de chase
+	velocity = direction_to_target * chase_speed
+	
+	move_and_slide()
+	
+# chequea si están a distancia de la visión del enemigo
 func can_see_player():
 	# distancia entre enemigo y jugador
 	var distance_to_player := global_position.distance_to(player.global_position)
