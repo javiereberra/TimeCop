@@ -19,6 +19,8 @@ var last_seen_position := Vector2.ZERO
 @export var corpse_scene: PackedScene
 #variable de impacto
 @export var corpse_push_distance := 12.0
+# variable para chequear paredes
+@export var corpse_push_check_distance := 25.0
 
 #  ---ESTADOS DE LA IA----
 enum State {
@@ -145,14 +147,35 @@ func can_see_player():
 	
 # Elinimar al enemigo
 func die(impact_direction: Vector2):
+	# ----Comprobamos si hay una pared cerca en la dirección del impacto----
+	var space_state := get_world_2d().direct_space_state
+	
+	var check_end := global_position + impact_direction * corpse_push_check_distance
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position,
+		check_end
+	)
+	
+	query.collision_mask = collision_layer
+	query.exclude = [self]
+	
+	var result := space_state.intersect_ray(query)
+	
+	# ----creamos el cadaver y lo posicionamos en rotación al origen del impacto----
 	var corpse := corpse_scene.instantiate()
 	
 	get_parent().add_child(corpse)
 	
-	print("Dirección impacto: ", impact_direction)
-	print("Empuje: ", impact_direction * corpse_push_distance)
-	corpse.global_position = global_position + impact_direction * corpse_push_distance
+	corpse.global_position = global_position
 	corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
+	
+	# ---comprobamos si hay espacio para el empuje ---
+	if result.is_empty():
+		corpse.push_direction = impact_direction
+		corpse.push_speed = 150.0
+		corpse.push_time = 0.10		
+	else:
+		print("no hay espacio")
 	
 	queue_free()
 	

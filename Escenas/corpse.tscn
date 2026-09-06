@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://3blqltmvgxmx"]
+[gd_scene load_steps=3 format=3 uid="uid://3blqltmvgxmx"]
 
+[ext_resource type="Script" uid="uid://bltf0dke5r6s" path="res://Escenas/corpse.gd" id="1_fxbd3"]
 [ext_resource type="Texture2D" uid="uid://tob21lm44qof" path="res://Assets/Sprites/Corpses/enemyCorpseMilitary.png" id="1_w1h7d"]
 
 [node name="Corpse" type="Node2D"]
+z_index = 1
+script = ExtResource("1_fxbd3")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_w1h7d")
