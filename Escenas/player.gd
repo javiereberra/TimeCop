@@ -163,5 +163,5 @@ func shoot():
 	
 	#Si el objeto tiene die(), eliminar
 	if collider.has_method("die"):
-		collider.die()
+		collider.die(shoot_direction)
 	

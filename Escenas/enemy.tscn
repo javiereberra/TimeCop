@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://j2c5vpycucib"]
+[gd_scene load_steps=5 format=3 uid="uid://j2c5vpycucib"]
 
 [ext_resource type="Script" uid="uid://vg54r5c5ntkc" path="res://Escenas/enemy.gd" id="1_yj12m"]
 [ext_resource type="Texture2D" uid="uid://dpb3g0t4k05cv" path="res://Assets/Sprites/Enemies/soldier1_machine.png" id="2_40vke"]
+[ext_resource type="PackedScene" uid="uid://3blqltmvgxmx" path="res://Escenas/corpse.tscn" id="2_tljeb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gyqm"]
 radius = 15.0
@@ -10,6 +11,8 @@ height = 42.0
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_yj12m")
 attack_distance = 150
+corpse_scene = ExtResource("2_tljeb")
+corpse_push_distance = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_40vke")

@@ -15,6 +15,11 @@ extends CharacterBody2D
 
 var last_seen_position := Vector2.ZERO
 
+#variable exportable de corpse
+@export var corpse_scene: PackedScene
+#variable de impacto
+@export var corpse_push_distance := 12.0
+
 #  ---ESTADOS DE LA IA----
 enum State {
 	PATROL,
@@ -139,7 +144,16 @@ func can_see_player():
 	return true
 	
 # Elinimar al enemigo
-func die():
+func die(impact_direction: Vector2):
+	var corpse := corpse_scene.instantiate()
+	
+	get_parent().add_child(corpse)
+	
+	print("Dirección impacto: ", impact_direction)
+	print("Empuje: ", impact_direction * corpse_push_distance)
+	corpse.global_position = global_position + impact_direction * corpse_push_distance
+	corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
+	
 	queue_free()
 	
 
