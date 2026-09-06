@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bpscirs10d65h"
+path="res://.godot/imported/20. Inner Animal.mp3-30f9d55ea7a5d5a3978108be70bf4787.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/20. Inner Animal.mp3"
+dest_files=["res://.godot/imported/20. Inner Animal.mp3-30f9d55ea7a5d5a3978108be70bf4787.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

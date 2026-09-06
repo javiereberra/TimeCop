@@ -21,6 +21,9 @@ extends CharacterBody2D
 @export var shoot_range := 2000.0
 # Referencia a la animación de piernas
 @onready var legs: AnimatedSprite2D = $Legs
+#Referencia al sonido de disparo
+@onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
+
 
 # variable para direcciòn de apuntado
 var aim_direction := Vector2.RIGHT
@@ -127,8 +130,9 @@ func update_peek_camera(delta):
 	)
 	
 func shoot():
-	#??
-	print("bang")
+	#sonido de disparo
+	shoot_sound.play()
+	
 	var space_state := get_world_2d().direct_space_state
 	
 	var shoot_direction := (

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://kba2peclb4b2"
+path="res://.godot/imported/07. Miami.mp3-3ffdbf17674f8a7b2e4ed827f4bd55c2.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/07. Miami.mp3"
+dest_files=["res://.godot/imported/07. Miami.mp3-3ffdbf17674f8a7b2e4ed827f4bd55c2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

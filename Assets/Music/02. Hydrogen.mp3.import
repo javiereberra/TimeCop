@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bacdyx6x5tylm"
+path="res://.godot/imported/02. Hydrogen.mp3-88cb3157e2ff8cf4e39e0e6040b4a376.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/02. Hydrogen.mp3"
+dest_files=["res://.godot/imported/02. Hydrogen.mp3-88cb3157e2ff8cf4e39e0e6040b4a376.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

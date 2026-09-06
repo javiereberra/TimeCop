@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=4 uid="uid://ofqx032o8wcs"]
+[gd_scene load_steps=12 format=4 uid="uid://ofqx032o8wcs"]
 
 [ext_resource type="Script" uid="uid://cn8f4nf0k7gd" path="res://Levels/level_01.gd" id="1_1jt1u"]
 [ext_resource type="Texture2D" uid="uid://ben3fwgeoerqv" path="res://Assets/Sprites/Tiles/tilesheet_complete.png" id="1_hb0y7"]
 [ext_resource type="Script" uid="uid://g10ukeqhatkn" path="res://Levels/phase_manager.gd" id="2_er0or"]
+[ext_resource type="AudioStream" uid="uid://bacdyx6x5tylm" path="res://Assets/Music/02. Hydrogen.mp3" id="2_ocwms"]
 [ext_resource type="PackedScene" uid="uid://j2c5vpycucib" path="res://Escenas/enemy.tscn" id="3_1cq4g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1jt1u"]
@@ -1664,6 +1665,10 @@ sources/0 = SubResource("TileSetAtlasSource_er0or")
 
 [node name="Level01" type="Node2D"]
 script = ExtResource("1_1jt1u")
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_ocwms")
+autoplay = true
 
 [node name="FloorManager" type="Node" parent="."]
 
