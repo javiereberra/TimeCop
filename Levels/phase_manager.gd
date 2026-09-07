@@ -15,6 +15,11 @@ func _ready():
 	# Configuración visual inicial
 	timeline_a.visible = true
 	timeline_b.visible = false
+	
+	# Configuración de procesamiento inicial
+	timeline_a.process_mode = Node.PROCESS_MODE_INHERIT
+	timeline_b.process_mode = Node.PROCESS_MODE_DISABLED
+	
 	# Configurar colisiones
 	player.collision_mask = 1
 

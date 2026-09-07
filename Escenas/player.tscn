@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bsqqj6e68g4vc"]
+[gd_scene load_steps=12 format=3 uid="uid://bsqqj6e68g4vc"]
 
 [ext_resource type="Texture2D" uid="uid://btvtae8nhfo1p" path="res://Assets/Sprites/Player/hitman1_gun.png" id="1_cnkc8"]
 [ext_resource type="Script" uid="uid://bnlantxr581sy" path="res://Escenas/player.gd" id="1_i8vih"]
+[ext_resource type="PackedScene" uid="uid://3blqltmvgxmx" path="res://Escenas/corpse.tscn" id="2_b21vg"]
 [ext_resource type="Texture2D" uid="uid://dj0d4wyg0juy8" path="res://Assets/Sprites/Player/sinpiernas.png" id="3_7v5l4"]
 [ext_resource type="Texture2D" uid="uid://p80c4rim040o" path="res://Assets/UI/crosshair.png" id="3_qgqwx"]
 [ext_resource type="Texture2D" uid="uid://cl8iwdkdlaxqr" path="res://Assets/Sprites/Player/legs1a.png" id="3_xlwfv"]
@@ -45,6 +46,7 @@ height = 42.0
 collision_layer = 4
 script = ExtResource("1_i8vih")
 peek_distance = 400.0
+corpse_scene = ExtResource("2_b21vg")
 
 [node name="Legs" type="AnimatedSprite2D" parent="."]
 z_index = 1

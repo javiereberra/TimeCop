@@ -23,6 +23,8 @@ extends CharacterBody2D
 @onready var legs: AnimatedSprite2D = $Legs
 #Referencia al sonido de disparo
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
+#Instancia de la escena del cuerpo
+@export var corpse_scene: PackedScene
 
 
 # variable para direcciòn de apuntado
@@ -30,6 +32,9 @@ var aim_direction := Vector2.RIGHT
 
 # variable para chequear quien controla la mira
 var using_gamepad_aim := false
+
+# estado jugador vivo/muerto
+var is_dead := false
 
 func _ready() -> void:
 	#ocultar cursor mouse
@@ -40,12 +45,21 @@ func _input(event):
 		using_gamepad_aim = false
 		
 func _process(_delta):
+	#para inhabilitar acciones al morir
+	if is_dead:
+		return
 	# la mira toma posición del mouse
 	if not using_gamepad_aim:
 		crosshair.global_position = get_global_mouse_position()
 
 # movimiento base
 func _physics_process(delta):
+	
+	#si esta muerto no se puede mover
+	if is_dead:
+		velocity = Vector2.ZERO
+		return
+	
 	var direction := Input.get_vector(
 		"move_left",
 		"move_right",
@@ -130,6 +144,9 @@ func update_peek_camera(delta):
 	)
 	
 func shoot():
+	#para inhabilitar acciones al morir
+	if is_dead:
+		return
 	#sonido de disparo
 	shoot_sound.play()
 	
@@ -165,3 +182,17 @@ func shoot():
 	if collider.has_method("die"):
 		collider.die(shoot_direction)
 	
+func die(impact_direction: Vector2):
+	
+	if is_dead:
+		return
+	is_dead = true
+	
+	var corpse := corpse_scene.instantiate()
+	
+	get_parent().add_child(corpse)
+	
+	corpse.global_position = global_position
+	corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
+	
+	hide()

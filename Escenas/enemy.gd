@@ -21,6 +21,12 @@ var last_seen_position := Vector2.ZERO
 @export var corpse_push_distance := 12.0
 # variable para chequear paredes
 @export var corpse_push_check_distance := 25.0
+# variable parr un cooldown
+@export var shoot_cooldown := 0.5
+# temporizador para el disparo
+var shoot_timer := 0.0
+#Referencia al sonido de disparo
+@onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
 
 #  ---ESTADOS DE LA IA----
 enum State {
@@ -38,7 +44,11 @@ func _ready():
 	obstacle_check.collision_mask = collision_layer
 
 # PROCESAR LOS ESTADOS
-func _physics_process(_delta):
+func _physics_process(delta):
+	print(name, " procesando | layer: ", collision_layer)
+	if shoot_timer > 0:
+		shoot_timer -= delta
+	
 	if can_see_player():
 		print("VEO AL PLAYER")
 	
@@ -47,7 +57,7 @@ func _physics_process(_delta):
 	elif current_state == State.CHASE:
 		chase()
 	
-# FUNCIÒN DEL ESTADO PATROL
+# ------------- ESTADO PATROL-----------------------
 func patrol():
 	# si ve al jugador, guarda posicion y pasa a CHASE
 	if can_see_player():
@@ -72,7 +82,7 @@ func patrol():
 	
 
 
-#   ESTADO CHASE  
+#   ------------ESTADO CHASE -------------- 
 func chase():
 	
 	#mientras vea al jugador, recordar su posicion
@@ -89,6 +99,7 @@ func chase():
 	if can_see_player() and distance_to_player <= attack_distance:
 		velocity = Vector2.ZERO
 		print("ATTACK")
+		shoot()
 		return
 	
 	#se determina direcciòn del player
@@ -106,6 +117,10 @@ func chase():
 	
 # chequea si están a distancia de la visión del enemigo
 func can_see_player():
+	# no ve al jugador si esta muerto
+	if player.is_dead:
+		return false
+	
 	# distancia entre enemigo y jugador
 	var distance_to_player := global_position.distance_to(player.global_position)
 	# si no està a distancia no lo ve
@@ -179,6 +194,43 @@ func die(impact_direction: Vector2):
 	
 	queue_free()
 	
+func shoot():
+	
+	if shoot_timer > 0:
+		return
+		
+	shoot_timer = shoot_cooldown
+	shoot_sound.play()
+	print("DISPARA: ", name, " | Layer: ", collision_layer)
+	
+	var shoot_direction := (
+		player.global_position - global_position
+	).normalized()
+
+	var shoot_end := global_position + shoot_direction * vision_distance
+
+	var space_state := get_world_2d().direct_space_state
+	
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position,
+		shoot_end
+	)
+	
+	query.collision_mask = collision_layer | (1 << 2)
+	query.exclude = [self]
+	
+	var result := space_state.intersect_ray(query)
+	
+	if result.is_empty():
+		return
+		
+	var collider = result["collider"]
+	
+	if collider == player:
+		print("PLAYER IMPACTADO")
+		player.die(shoot_direction)
+		
+
 
 # cuando el timer termina, deja de esperar
 func _on_patrol_timer_timeout():
