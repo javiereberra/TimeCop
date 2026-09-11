@@ -55,6 +55,8 @@ func _process(_delta):
 # movimiento base
 func _physics_process(delta):
 	
+	if Input.is_action_just_pressed("restart_floor"):
+		print("REINICIO SOLICITADO")
 	#si esta muerto no se puede mover
 	if is_dead:
 		velocity = Vector2.ZERO
