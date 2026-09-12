@@ -45,7 +45,7 @@ func _ready():
 
 # PROCESAR LOS ESTADOS
 func _physics_process(delta):
-	print(name, " procesando | layer: ", collision_layer)
+	
 	if shoot_timer > 0:
 		shoot_timer -= delta
 	

@@ -35,6 +35,7 @@ var using_gamepad_aim := false
 
 # estado jugador vivo/muerto
 var is_dead := false
+var player_corpse: Node2D = null
 
 func _ready() -> void:
 	#ocultar cursor mouse
@@ -56,7 +57,13 @@ func _process(_delta):
 func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("restart_floor"):
-		print("REINICIO SOLICITADO")
+		var floor_manager := get_tree().get_first_node_in_group("floor_manager")
+		
+		if floor_manager != null:
+			floor_manager.restart_floor()
+		else:
+			push_warning("no se encontro floormanager")
+			
 	#si esta muerto no se puede mover
 	if is_dead:
 		velocity = Vector2.ZERO
@@ -190,11 +197,17 @@ func die(impact_direction: Vector2):
 		return
 	is_dead = true
 	
-	var corpse := corpse_scene.instantiate()
+	player_corpse = corpse_scene.instantiate()
 	
-	get_parent().add_child(corpse)
+	get_parent().add_child(player_corpse)
 	
-	corpse.global_position = global_position
-	corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
+	player_corpse.global_position = global_position
+	player_corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
 	
 	hide()
+	
+func remove_corpse():
+	if is_instance_valid(player_corpse):
+		player_corpse.queue_free()
+		player_corpse = null
+		

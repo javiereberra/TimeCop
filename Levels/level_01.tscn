@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=4 uid="uid://ofqx032o8wcs"]
+[gd_scene load_steps=13 format=4 uid="uid://ofqx032o8wcs"]
 
 [ext_resource type="Script" uid="uid://cn8f4nf0k7gd" path="res://Levels/level_01.gd" id="1_1jt1u"]
 [ext_resource type="Texture2D" uid="uid://ben3fwgeoerqv" path="res://Assets/Sprites/Tiles/tilesheet_complete.png" id="1_hb0y7"]
 [ext_resource type="Script" uid="uid://g10ukeqhatkn" path="res://Levels/phase_manager.gd" id="2_er0or"]
 [ext_resource type="AudioStream" uid="uid://bacdyx6x5tylm" path="res://Assets/Music/02. Hydrogen.mp3" id="2_ocwms"]
 [ext_resource type="PackedScene" uid="uid://j2c5vpycucib" path="res://Escenas/enemy.tscn" id="3_1cq4g"]
+[ext_resource type="Script" uid="uid://xpklha65n0xg" path="res://Levels/floor_manager.gd" id="3_pbphk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1jt1u"]
 texture = ExtResource("1_hb0y7")
@@ -1670,7 +1671,8 @@ script = ExtResource("1_1jt1u")
 stream = ExtResource("2_ocwms")
 autoplay = true
 
-[node name="FloorManager" type="Node" parent="."]
+[node name="FloorManager" type="Node" parent="." groups=["floor_manager"]]
+script = ExtResource("3_pbphk")
 
 [node name="PhaseManager" type="Node" parent="." groups=["phase_manager"]]
 script = ExtResource("2_er0or")
