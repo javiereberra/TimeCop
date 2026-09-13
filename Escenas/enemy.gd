@@ -49,8 +49,8 @@ func _physics_process(delta):
 	if shoot_timer > 0:
 		shoot_timer -= delta
 	
-	if can_see_player():
-		print("VEO AL PLAYER")
+	#if can_see_player():
+	#	print("VEO AL PLAYER")
 	
 	if current_state == State.PATROL:
 		patrol()

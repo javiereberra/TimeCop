@@ -9,7 +9,7 @@
 radius = 15.0
 height = 42.0
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_yj12m")
 attack_distance = 150
 corpse_scene = ExtResource("2_tljeb")
