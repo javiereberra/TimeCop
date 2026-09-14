@@ -42,6 +42,11 @@ func remove_current_enemies():
 	for child in timeline_b.get_children():
 		if child.is_in_group("enemy"):
 			child.queue_free()
+			
+func remove_corpses():
+	for corpse in get_tree().get_nodes_in_group("corpse"):
+		corpse.queue_free()
+		
 
 func respawn_enemies():
 	
@@ -70,6 +75,7 @@ func restart_floor():
 	print("REINICIAR PISO")
 	
 	remove_current_enemies()
+	remove_corpses()
 	respawn_enemies()
 	
 	player.remove_corpse()

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bltf0dke5r6s" path="res://Escenas/corpse.gd" id="1_fxbd3"]
 [ext_resource type="Texture2D" uid="uid://tob21lm44qof" path="res://Assets/Sprites/Corpses/enemyCorpseMilitary.png" id="1_w1h7d"]
 
-[node name="Corpse" type="Node2D"]
+[node name="Corpse" type="Node2D" groups=["corpse"]]
 z_index = 1
 script = ExtResource("1_fxbd3")
 
