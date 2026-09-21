@@ -1,7 +1,6 @@
 extends Node
 
-#Referencia al Piso 1
-@onready var floor: Node2D = $"../Floor01"
+
 #Referencia al Player
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 #Referencia al SpawnPoint
@@ -9,6 +8,8 @@ extends Node
 #Referencia a las timelines
 @onready var timeline_a: Node2D = $"../Floor01/TimelineA"
 @onready var timeline_b: Node2D = $"../Floor01/TimelineB"
+#Referencia al phase manager
+@onready var phase_manager: Node = get_tree().get_first_node_in_group("phase_manager")
 
 # Ficha para los enemigos
 var enemy_data :=[]
@@ -84,3 +85,5 @@ func restart_floor():
 	player.is_dead = false
 	player.show()
 	player.velocity = Vector2.ZERO
+	
+	phase_manager.reset_to_timeline_a()

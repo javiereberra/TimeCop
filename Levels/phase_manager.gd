@@ -54,3 +54,18 @@ func change_phase() -> void:
 		player.collision_mask = 2
 		timeline_a.process_mode = Node.PROCESS_MODE_DISABLED
 		timeline_b.process_mode = Node.PROCESS_MODE_INHERIT
+
+func reset_to_timeline_a():
+	# Timeline A Activa
+	timeline_a_active = true
+	
+	# Visibilidad
+	timeline_a.visible = true
+	timeline_b.visible = false
+	
+	# Procesamiento
+	timeline_a.process_mode = Node.PROCESS_MODE_INHERIT
+	timeline_b.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	# Colisiones del player
+	player.collision_mask = 1

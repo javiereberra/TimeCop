@@ -25,6 +25,8 @@ extends CharacterBody2D
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
 #Instancia de la escena del cuerpo
 @export var corpse_scene: PackedScene
+# Referencia al label
+@onready var restart_label: Label = get_tree().get_first_node_in_group("restart_label")
 
 
 # variable para direcciòn de apuntado
@@ -40,12 +42,15 @@ var player_corpse: Node2D = null
 func _ready() -> void:
 	#ocultar cursor mouse
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 
 func _input(event):
 	if event is InputEventMouseMotion:
 		using_gamepad_aim = false
 		
 func _process(_delta):
+	
+	restart_label.visible = is_dead
 	#para inhabilitar acciones al morir
 	if is_dead:
 		return
@@ -196,6 +201,7 @@ func die(impact_direction: Vector2):
 	if is_dead:
 		return
 	is_dead = true
+	
 	
 	player_corpse = corpse_scene.instantiate()
 	
