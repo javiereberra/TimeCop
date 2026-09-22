@@ -17,13 +17,12 @@ var last_seen_position := Vector2.ZERO
 
 #variable exportable de corpse
 @export var corpse_scene: PackedScene
-#variable de impacto
-@export var corpse_push_distance := 12.0
+
 # variable para chequear paredes
 @export var corpse_push_check_distance := 25.0
-# variable parr un cooldown
+# variable para un cooldown
 @export var shoot_cooldown := 0.5
-# temporizador para el disparo
+# tiempo restante para poder disparar
 var shoot_timer := 0.0
 #Referencia al sonido de disparo
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootSound
@@ -33,7 +32,7 @@ enum State {
 	PATROL,
 	CHASE
 }
-
+# empezamos con patrol
 var current_state = State.PATROL
 
 # Variable de PATROL
@@ -48,9 +47,7 @@ func _physics_process(delta):
 	
 	if shoot_timer > 0:
 		shoot_timer -= delta
-	
-	#if can_see_player():
-	#	print("VEO AL PLAYER")
+		
 	
 	if current_state == State.PATROL:
 		patrol()
@@ -85,22 +82,14 @@ func patrol():
 #   ------------ESTADO CHASE -------------- 
 func chase():
 	
-	#mientras vea al jugador, recordar su posicion
+	# si no ve al jugador, sale del estado CHASE
 	if not can_see_player():
 		current_state = State.PATROL
 		velocity = Vector2.ZERO
 		return
-		
-	last_seen_position = player.global_position
-		
-	#calculamos la distancia entre el enemigo y jugador	
-	var distance_to_player := global_position.distance_to(player.global_position)
 	
-	if can_see_player() and distance_to_player <= attack_distance:
-		velocity = Vector2.ZERO
-		print("ATTACK")
-		shoot()
-		return
+	# mientras lo ve, guarda su posiciòn como última posición vista
+	last_seen_position = player.global_position
 	
 	#se determina direcciòn del player
 	var direction_to_target := (
@@ -109,8 +98,17 @@ func chase():
 	
 	# el enemigo debe mirar al player
 	rotation = direction_to_target.angle()
+		
+	# calculamos la distancia entre el enemigo y jugador	
+	var distance_to_player := global_position.distance_to(player.global_position)
 	
-	#lo persigue con la velocidad de chase
+	# si la distancia es menor a la distancia de ataque, el enemigo dispara
+	if distance_to_player <= attack_distance:
+		velocity = Vector2.ZERO		
+		shoot()
+		return
+	
+	# si la distancia no es menor, lo persigue con la velocidad de chase
 	velocity = direction_to_target * chase_speed
 	
 	move_and_slide()
@@ -160,7 +158,7 @@ func can_see_player():
 	
 	return true
 	
-# Elinimar al enemigo
+# Eliminar al enemigo
 func die(impact_direction: Vector2):
 	# ----Comprobamos si hay una pared cerca en la dirección del impacto----
 	var space_state := get_world_2d().direct_space_state
@@ -189,26 +187,31 @@ func die(impact_direction: Vector2):
 		corpse.push_direction = impact_direction
 		corpse.push_speed = 150.0
 		corpse.push_time = 0.10		
-	else:
-		print("no hay espacio")
 	
+	# eliminamos la instancia
 	queue_free()
-	
+
+# funcion para disparar	
 func shoot():
 	
+	# si el timer es mayor a 0, no disparar
 	if shoot_timer > 0:
 		return
-		
-	shoot_timer = shoot_cooldown
-	shoot_sound.play()
-	print("DISPARA: ", name, " | Layer: ", collision_layer)
 	
+	# reiniciamos el tiempo del cooldwon
+	shoot_timer = shoot_cooldown
+	# sonido del disparo
+	shoot_sound.play()
+	
+	# calculamos la direcciòn del disparo
 	var shoot_direction := (
 		player.global_position - global_position
 	).normalized()
 
+	# calculamos punto final del disparo
 	var shoot_end := global_position + shoot_direction * vision_distance
 
+	# creamos la consulta del disparo
 	var space_state := get_world_2d().direct_space_state
 	
 	var query := PhysicsRayQueryParameters2D.create(
@@ -221,13 +224,13 @@ func shoot():
 	
 	var result := space_state.intersect_ray(query)
 	
+	# si no hay resultado, no pasa nada
 	if result.is_empty():
 		return
 		
 	var collider = result["collider"]
-	
-	if collider == player:
-		print("PLAYER IMPACTADO")
+	# si el resultado es el player, muere
+	if collider == player:		
 		player.die(shoot_direction)
 		
 
