@@ -2,6 +2,8 @@ extends Node2D
 
 @onready var spawn_point: Marker2D = $Floor01/SpawnPoint
 
+# posiciona al jugador en el spawn point del floor 01
+
 func _ready() -> void:
 	var player := get_tree().get_first_node_in_group("player")
 
