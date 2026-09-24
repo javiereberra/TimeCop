@@ -15,15 +15,17 @@ extends Node
 var enemy_data :=[]
 
 func _ready():		
+	# Registramos los enemigos de cada timeline
 	register_enemies_in_timeline(timeline_a, "A")
 	register_enemies_in_timeline(timeline_b, "B")
 	
-	print(enemy_data)
+	
 
-
+# recorremos todos los enemigos de las timelines
 func register_enemies_in_timeline(timeline: Node2D, timeline_name: String):
 	for child in timeline.get_children():
 		if child.is_in_group("enemy"):
+			# guarda lo nedesario para reconstruirlos
 			var data := {
 				"scene": child.scene_file_path,
 				"position": child.global_position,
@@ -32,9 +34,10 @@ func register_enemies_in_timeline(timeline: Node2D, timeline_name: String):
 				"collision_layer": child.collision_layer,
 				"collision_mask": child.collision_mask
 			}
-			
+			# guardamos info en enemy data
 			enemy_data.append(data)
 
+# eliminamos todos los enemigos
 func remove_current_enemies():
 	for child in timeline_a.get_children():
 		if child.is_in_group("enemy"):
@@ -44,11 +47,12 @@ func remove_current_enemies():
 		if child.is_in_group("enemy"):
 			child.queue_free()
 			
+# eliminamos todos los cuerpos
 func remove_corpses():
 	for corpse in get_tree().get_nodes_in_group("corpse"):
 		corpse.queue_free()
 		
-
+# recreamos los enemigos usando el enemy data
 func respawn_enemies():
 	
 	for data in enemy_data:
@@ -62,28 +66,26 @@ func respawn_enemies():
 			
 		enemy.collision_layer = data["collision_layer"]
 		enemy.collision_mask = data["collision_mask"]
-		print(
-			"Timeline: ", data["timeline"],
-			" | Layer: ", enemy.collision_layer,
-			" | Mask: ", enemy.collision_mask
-		)
+		
 		
 		enemy.global_position = data["position"]
 		enemy.global_rotation = data["rotation"]
 		
-
+# reiniciamos el piso
 func restart_floor():
-	print("REINICIAR PISO")
 	
+	# removemos cuerpos y enemigos
 	remove_current_enemies()
 	remove_corpses()
+	# recontruimos los enemigos
 	respawn_enemies()
 	
+	# eliminamos el cuerpo del player si lo hubiere
 	player.remove_corpse()
-	
+	# reseteamos las condiciones del player para iniciar el piso
 	player.global_position = spawn_point.global_position
 	player.is_dead = false
 	player.show()
 	player.velocity = Vector2.ZERO
-	
+	# regresamos a la timeline a
 	phase_manager.reset_to_timeline_a()

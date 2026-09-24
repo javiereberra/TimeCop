@@ -37,19 +37,20 @@ var using_gamepad_aim := false
 
 # estado jugador vivo/muerto
 var is_dead := false
+# variable para el cuerpo del player
 var player_corpse: Node2D = null
 
 func _ready() -> void:
 	#ocultar cursor mouse
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	
-
+# funciòn para no usar el mouse y gamepad al mismo tiempo
 func _input(event):
 	if event is InputEventMouseMotion:
 		using_gamepad_aim = false
 		
 func _process(_delta):
-	
+	# mostramos el restart label sólo cuando el player esta muerto
 	restart_label.visible = is_dead
 	#para inhabilitar acciones al morir
 	if is_dead:
@@ -61,6 +62,7 @@ func _process(_delta):
 # movimiento base
 func _physics_process(delta):
 	
+	# imput para resetear el nivel
 	if Input.is_action_just_pressed("restart_floor"):
 		var floor_manager := get_tree().get_first_node_in_group("floor_manager")
 		
@@ -74,6 +76,7 @@ func _physics_process(delta):
 		velocity = Vector2.ZERO
 		return
 	
+	# moviemiento
 	var direction := Input.get_vector(
 		"move_left",
 		"move_right",
@@ -92,6 +95,7 @@ func _physics_process(delta):
 	velocity = direction * speed
 	move_and_slide()
 	
+	# controles gamepad
 	var gamepad_aim := Input.get_vector(
 		"aim_left",
 		"aim_right",
@@ -123,6 +127,7 @@ func _physics_process(delta):
 		else:
 			push_warning("No se encontrò el PhaseMananager.")
 			
+	# imput disparar
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
 #Función para chequear si hay un objeto antes del cambio de fase
@@ -195,23 +200,25 @@ func shoot():
 	#Si el objeto tiene die(), eliminar
 	if collider.has_method("die"):
 		collider.die(shoot_direction)
-	
+
+# muerte del player	
 func die(impact_direction: Vector2):
 	
 	if is_dead:
 		return
 	is_dead = true
 	
-	
+	#creamos un cuerpo
 	player_corpse = corpse_scene.instantiate()
-	
+	# lo asignamos a la variable
 	get_parent().add_child(player_corpse)
-	
+	# posicionamos el cuerpo
 	player_corpse.global_position = global_position
 	player_corpse.global_rotation = impact_direction.angle() + deg_to_rad(180)
-	
+	# escondemos el sprite del player
 	hide()
-	
+
+# removemos el cuerpo para el reset
 func remove_corpse():
 	if is_instance_valid(player_corpse):
 		player_corpse.queue_free()

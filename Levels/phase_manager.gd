@@ -25,8 +25,7 @@ func _ready():
 
 #CAMBIO DE FASE
 func change_phase() -> void:
-	print("Cambio de fase solicitado")
-	
+		
 	#Averiguar a qué máscara vamos cambiar
 	var target_mask: int	
 	if timeline_a_active:
@@ -35,6 +34,7 @@ func change_phase() -> void:
 		target_mask = 1
 		
 	if player.is_phase_blocked(target_mask):
+		# AGREGAR ADVERTENCIA VISUAL??
 		print("Cambio de fase bloqueado")
 		return
 		
@@ -55,6 +55,7 @@ func change_phase() -> void:
 		timeline_a.process_mode = Node.PROCESS_MODE_DISABLED
 		timeline_b.process_mode = Node.PROCESS_MODE_INHERIT
 
+# para volver a la timeline a cuando hagamos reset
 func reset_to_timeline_a():
 	# Timeline A Activa
 	timeline_a_active = true

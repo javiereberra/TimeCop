@@ -13,8 +13,7 @@ var current_level_index: int = 0
 var current_level: Node = null
 
 # Cargar nivel actual
-func _ready() -> void:
-	print("1. LevelManager inició")
+func _ready() -> void:	
 	
 	load_level(current_level_index)
 
