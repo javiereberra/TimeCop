@@ -11,7 +11,7 @@ extends CharacterBody2D
 @export var vision_distance := 500.0
 @export var vision_angle := 90.0
 # VARIABLES DE CHASE
-@export var attack_distance := 50
+@export var attack_distance := 250
 
 var last_seen_position := Vector2.ZERO
 
@@ -193,7 +193,8 @@ func die(impact_direction: Vector2):
 
 # funcion para disparar	
 func shoot():
-	
+	print("SHOOT")
+	print("Attack Distance: ", attack_distance)
 	# si el timer es mayor a 0, no disparar
 	if shoot_timer > 0:
 		return
