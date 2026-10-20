@@ -24,7 +24,8 @@ var last_seen_position := Vector2.ZERO
 # variable para chequear paredes
 @export var corpse_push_check_distance := 25.0
 
-
+# referencia a Area2d
+@onready var detection_area: Area2D = $DetectionArea
 
 #  ---ESTADOS DE LA IA----
 enum State {
@@ -97,20 +98,11 @@ func can_see_player():
 	if player.is_dead:
 		return false
 	
-	# distancia entre enemigo y jugador
-	var distance_to_player := global_position.distance_to(player.global_position)
-	# si no està a distancia no lo ve
-	if distance_to_player > vision_distance:
+	# REEMPLAZAR detection area
+	if not detection_area.get_overlapping_bodies().has(player):
 		return false
-	# calcular si el angulo de vision ve al jugador
-	var direction_to_player := (player.global_position - global_position).normalized()
-	var forward_direction := transform.x.normalized()
 	
-	var angle_to_player := rad_to_deg(
-		acos(forward_direction.dot(direction_to_player))
-	)
-	
-	if angle_to_player > vision_angle / 2:
+	if not player.get_collision_mask_value(2):
 		return false
 		
 	# raycast para ver si hay una pared en el medio
@@ -120,9 +112,11 @@ func can_see_player():
 		global_position,
 		player.global_position
 	)
+	
 	# la capa del rayo debe ser la misma del enemigo (timeline)
 	query.collision_mask = collision_layer | (1 << 2)
 	query.exclude = [self]
+	
 	# guarda el primer impacto
 	var result := space_state.intersect_ray(query)
 	

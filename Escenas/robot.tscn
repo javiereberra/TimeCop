@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cttsvgwoje4fe"]
+[gd_scene load_steps=5 format=3 uid="uid://cttsvgwoje4fe"]
 
 [ext_resource type="Script" uid="uid://dceaidsnftx2l" path="res://Escenas/robot.gd" id="1_nqkmw"]
 [ext_resource type="Texture2D" uid="uid://wlwm7snw6u4b" path="res://Assets/Sprites/Enemies/robot1_stand.png" id="2_nqkmw"]
@@ -6,6 +6,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gyqm"]
 radius = 15.0
 height = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nqkmw"]
+radius = 300.0
 
 [node name="Robot" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_nqkmw")
@@ -23,5 +26,13 @@ target_position = Vector2(40, 0)
 [node name="PatrolTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_nqkmw")
+one_way_collision_margin = 0.0
 
 [connection signal="timeout" from="PatrolTimer" to="." method="_on_patrol_timer_timeout"]
