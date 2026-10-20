@@ -52,26 +52,16 @@ func _physics_process(delta):
 	
 # ------------- ESTADO DORMANT-----------------------
 func dormant():
+	# el robot permanece inmovil
+	velocity = Vector2.ZERO
+	
 	# si ve al jugador, guarda posicion y pasa a ATTACK
 	if can_see_player():
 		last_seen_position = player.global_position
 		current_state = State.ATTACK
 		return
 		
-	# Si hay una pared delante y no espera, gira 90 grados.
-	if obstacle_check.is_colliding() and not is_waiting:
-		rotation += deg_to_rad(90)
-		# espera, inicia timer
-		is_waiting = true
-		patrol_timer.start()
-		
-	# Avanza hacia delante siempre que no espere.
-	if is_waiting:
-		velocity = Vector2.ZERO
-	else:
-		velocity = transform.x * patrol_speed	
-		
-	move_and_slide()
+	
 	
 
 
