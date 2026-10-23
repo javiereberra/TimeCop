@@ -8,7 +8,7 @@ radius = 15.0
 height = 42.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nqkmw"]
-radius = 100.0
+radius = 300.97
 
 [node name="Robot" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_nqkmw")

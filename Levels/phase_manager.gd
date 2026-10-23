@@ -48,6 +48,12 @@ func change_phase() -> void:
 	#cambiar capas de colisiòn del player
 	if timeline_a_active:
 		player.collision_mask = 1
+		
+		# Reiniciar los robots antes de desactivar TimelineB
+		for child in timeline_b.get_children():
+			if child.has_method("deactivate"):
+				child.deactivate()
+		
 		timeline_a.process_mode = Node.PROCESS_MODE_INHERIT
 		timeline_b.process_mode = Node.PROCESS_MODE_DISABLED
 	else:

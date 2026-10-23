@@ -26,10 +26,13 @@ var last_seen_position := Vector2.ZERO
 
 # referencia a Area2d
 @onready var detection_area: Area2D = $DetectionArea
+# variable para la rotaciòn lenta
+@export var rotation_speed := 2.0
 
 #  ---ESTADOS DE LA IA----
 enum State {
 	DORMANT,
+	ACTIVATING,
 	ATTACK
 }
 # empezamos con dormant
@@ -59,7 +62,7 @@ func dormant():
 	# si ve al jugador, guarda posicion y pasa a ATTACK
 	if can_see_player():
 		last_seen_position = player.global_position
-		current_state = State.ATTACK
+		current_state = State.ACTIVATING
 		return
 		
 	
@@ -81,6 +84,8 @@ func attack(delta):
 	
 	# El robot mira hacia el Player
 	rotation = direction_to_target.angle()
+	
+	
 	
 	# Aceleramos progresivamente hacia el Player
 	velocity = velocity.move_toward(
@@ -163,6 +168,10 @@ func die(impact_direction: Vector2):
 	# eliminamos la instancia
 	queue_free()
 
+# Reinicia el robot cuando se desactiva la timeline
+func deactivate():
+	current_state = State.DORMANT
+	velocity = Vector2.ZERO
 
 
 # cuando el timer termina, deja de esperar
