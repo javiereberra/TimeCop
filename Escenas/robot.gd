@@ -51,6 +51,8 @@ func _physics_process(delta):
 		
 	if current_state == State.DORMANT:
 		dormant()
+	elif current_state == State.ACTIVATING:
+		activating(delta)
 	elif current_state == State.ATTACK:
 		attack(delta)
 	
@@ -68,15 +70,32 @@ func dormant():
 	
 	
 
-
+#  --------ESTADO ACTIVACION -----------
+func activating(delta):
+	# calculamos la direccion hacia el player
+	var direction_to_target := (
+		player.global_position - global_position
+	).normalized()
+	
+	#el robot gira lientamente hacia el player
+	rotation = rotate_toward(
+		rotation,
+		direction_to_target.angle(),
+		rotation_speed * delta
+	)
+	
+	#calcular cuanto falta para mirar al player
+	var angle_diff: float = abs(
+		angle_difference(rotation, direction_to_target.angle())
+	)
+	
+	# si està orientado hacia el player, comienza el ataque
+	if angle_diff < deg_to_rad(5.0):
+		current_state = State.ATTACK
+	
 #   ------------ESTADO ATTACK -------------- 
 func attack(delta):
-	# Si pierde al Player, vuelve a reposo
-	if not can_see_player():
-		current_state = State.DORMANT
-		velocity = Vector2.ZERO
-		return
-		
+			
 	# calculamos la direccón hacia el player
 	var direction_to_target := (
 		player.global_position - global_position
