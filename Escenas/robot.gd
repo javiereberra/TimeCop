@@ -5,7 +5,6 @@ extends CharacterBody2D
 @export var max_speed := 450.0
 
 # REFERENCIAS A NODOS
-@onready var patrol_timer: Timer = $PatrolTimer
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 
 # referencia a Area2d
