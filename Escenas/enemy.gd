@@ -239,3 +239,7 @@ func shoot():
 # cuando el timer termina, deja de esperar
 func _on_patrol_timer_timeout():
 	is_waiting = false
+
+func deactivate():
+	current_state = State.PATROL
+	velocity = Vector2.ZERO

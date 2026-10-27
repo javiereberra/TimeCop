@@ -58,6 +58,13 @@ func change_phase() -> void:
 		timeline_b.process_mode = Node.PROCESS_MODE_DISABLED
 	else:
 		player.collision_mask = 2
+		
+		# Reiniciamos los enemigos humanos antes de desactivar timelineA
+		for child in timeline_a.get_children():
+			if child.has_method("deactivate"):
+				child.deactivate()
+		
+		
 		timeline_a.process_mode = Node.PROCESS_MODE_DISABLED
 		timeline_b.process_mode = Node.PROCESS_MODE_INHERIT
 
