@@ -13,6 +13,7 @@ extends CharacterBody2D
 # VARIABLES DE CHASE
 @export var attack_distance := 250
 
+# ----esta variable es para agregar el estado ALERTA----
 var last_seen_position := Vector2.ZERO
 
 #variable exportable de corpse
@@ -40,7 +41,8 @@ var is_waiting := false
 
 #Asigna capa de colisión correspondiente al detector de paredes
 func _ready():
-	obstacle_check.collision_mask = collision_layer
+	# Detecta obstáculos de Timeline A
+	obstacle_check.collision_mask = 1
 
 # PROCESAR LOS ESTADOS
 func _physics_process(delta):
@@ -88,9 +90,7 @@ func chase():
 		velocity = Vector2.ZERO
 		return
 	
-	# mientras lo ve, guarda su posiciòn como última posición vista
-	last_seen_position = player.global_position
-	
+		
 	#se determina direcciòn del player
 	var direction_to_target := (
 		last_seen_position - global_position
@@ -142,8 +142,8 @@ func can_see_player():
 		global_position,
 		player.global_position
 	)
-	# la capa del rayo debe ser la misma del enemigo (timeline)
-	query.collision_mask = collision_layer | (1 << 2)
+	# Detecta obstáculos de Timeline A y al Player
+	query.collision_mask = 1 | (1 << 2)
 	query.exclude = [self]
 	# guarda el primer impacto
 	var result := space_state.intersect_ray(query)
@@ -169,7 +169,7 @@ func die(impact_direction: Vector2):
 		check_end
 	)
 	
-	query.collision_mask = collision_layer
+	query.collision_mask = 1
 	query.exclude = [self]
 	
 	var result := space_state.intersect_ray(query)
@@ -193,8 +193,7 @@ func die(impact_direction: Vector2):
 
 # funcion para disparar	
 func shoot():
-	print("SHOOT")
-	print("Attack Distance: ", attack_distance)
+	
 	# si el timer es mayor a 0, no disparar
 	if shoot_timer > 0:
 		return
@@ -220,7 +219,7 @@ func shoot():
 		shoot_end
 	)
 	
-	query.collision_mask = collision_layer | (1 << 2)
+	query.collision_mask = 1 | (1 << 2)
 	query.exclude = [self]
 	
 	var result := space_state.intersect_ray(query)
