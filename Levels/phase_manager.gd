@@ -9,6 +9,10 @@ var timeline_a_active: bool = true
 # referencia al jugador
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 
+# variable para el cooldown
+@export var phase_cooldown: float = 1.5
+var cooldown_remaining: float = 0.0
+
 func _ready():
 	# Timeline a comienza activa
 	timeline_a_active = true
@@ -23,9 +27,21 @@ func _ready():
 	# Configurar colisiones
 	player.collision_mask = 1
 
+
+func _process(delta: float) -> void:
+	if cooldown_remaining > 0.0:
+		cooldown_remaining = maxf(cooldown_remaining - delta, 0.0)
+		
+		if cooldown_remaining == 0.0:
+			print("TIME PHASE READY")
+
+
 #CAMBIO DE FASE
 func change_phase() -> void:
-		
+	##	
+	if cooldown_remaining > 0.0:
+		print("cambio bloqueado")
+		return
 	#Averiguar a qué máscara vamos cambiar
 	var target_mask: int	
 	if timeline_a_active:
@@ -40,7 +56,9 @@ func change_phase() -> void:
 		
 	#cambiar timeline activa
 	timeline_a_active = not timeline_a_active
-	
+	##
+	cooldown_remaining = phase_cooldown
+	print("cambio de fase")
 	#cambiar visibilidad
 	timeline_a.visible = timeline_a_active
 	timeline_b.visible = not timeline_a_active
