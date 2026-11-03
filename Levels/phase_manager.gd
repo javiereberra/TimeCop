@@ -9,6 +9,9 @@ var timeline_a_active: bool = true
 # referencia al jugador
 @onready var player: CharacterBody2D = get_tree().get_first_node_in_group("player")
 
+# referencia al flash
+@onready var phase_flash: ColorRect = $"../../../HUD/PhaseFlash"
+
 # variable para el cooldown
 @export var phase_cooldown: float = 1.5
 var cooldown_remaining: float = 0.0
@@ -59,6 +62,8 @@ func change_phase() -> void:
 	##
 	cooldown_remaining = phase_cooldown
 	print("cambio de fase")
+	#efecto visual
+	play_phase_flash()
 	#cambiar visibilidad
 	timeline_a.visible = timeline_a_active
 	timeline_b.visible = not timeline_a_active
@@ -101,3 +106,9 @@ func reset_to_timeline_a():
 	
 	# Colisiones del player
 	player.collision_mask = 1
+
+func play_phase_flash() -> void:
+	phase_flash.modulate.a = 0.6
+	
+	var tween := create_tween()
+	tween.tween_property(phase_flash, "modulate:a", 0.0, 0.15)
