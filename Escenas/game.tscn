@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://60502iba6j75"]
+[gd_scene load_steps=6 format=3 uid="uid://60502iba6j75"]
 
 [ext_resource type="Script" uid="uid://blfsv4oa603tk" path="res://Escenas/level_manager.gd" id="1_3418m"]
 [ext_resource type="PackedScene" uid="uid://bsqqj6e68g4vc" path="res://Escenas/player.tscn" id="1_obr3f"]
 [ext_resource type="PackedScene" uid="uid://ofqx032o8wcs" path="res://Levels/level_01.tscn" id="2_5g6uq"]
 [ext_resource type="PackedScene" uid="uid://bo82yu5b03by2" path="res://Escenas/hud.tscn" id="2_3418m"]
+[ext_resource type="Texture2D" uid="uid://bgwsvet1t7eay" path="res://Assets/UI/phase_watch.png" id="5_o5eqp"]
 
 [node name="Game" type="Node2D"]
 
@@ -43,3 +44,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="PhaseIcon" type="TextureRect" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_bottom = 55.0
+grow_horizontal = 0
+mouse_filter = 2
+texture = ExtResource("5_o5eqp")

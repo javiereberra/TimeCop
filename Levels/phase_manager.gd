@@ -16,6 +16,9 @@ var timeline_a_active: bool = true
 @export var phase_cooldown: float = 1.5
 var cooldown_remaining: float = 0.0
 
+# referencia al indicador del flash
+@onready var phase_icon: TextureRect = $"../../../HUD/PhaseIcon"
+
 func _ready():
 	# Timeline a comienza activa
 	timeline_a_active = true
@@ -37,6 +40,7 @@ func _process(delta: float) -> void:
 		
 		if cooldown_remaining == 0.0:
 			print("TIME PHASE READY")
+			phase_icon.show()
 
 
 #CAMBIO DE FASE
@@ -61,6 +65,7 @@ func change_phase() -> void:
 	timeline_a_active = not timeline_a_active
 	##
 	cooldown_remaining = phase_cooldown
+	phase_icon.hide()
 	print("cambio de fase")
 	#efecto visual
 	play_phase_flash()
